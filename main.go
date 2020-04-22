@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 )
@@ -14,8 +13,8 @@ var (
 	topValuesMin int            // Aktualne nejmensi hodnota v "topValues"
 )
 
-type keyStringValue struct {
-	Key   string
+type keyValue struct {
+	Key   interface{}
 	Value int
 }
 
@@ -33,26 +32,21 @@ func init() {
 	}
 }
 
-func sortMap(v interface{}) (interface{}, error) {
-	switch v.(type) {
-	case map[string]int:
-		var s []keyStringValue
-		for k, v := range v.(map[string]int) {
-			s = append(s, keyStringValue{k, v})
-		}
-		sort.Slice(s, func(i, j int) bool {
-			return s[i].Value > s[j].Value
-		})
-		return s, nil
-	default:
-		return nil, errors.New("Unsupported type")
+func sortMap(v interface{}) interface{} {
+	var s []keyValue
+	for k, v := range v.(map[string]int) {
+		s = append(s, keyValue{k, v})
 	}
+	sort.Slice(s, func(i, j int) bool {
+		return s[i].Value > s[j].Value
+	})
+	return s
 }
 
 func main() {
-	sortedX, _ := sortMap(values)
-	for _, v := range sortedX.([]keyStringValue) {
-		fmt.Printf("%s, %d\n", v.Key, v.Value)
+	sortedX := sortMap(values)
+	for _, v := range sortedX.([]keyValue) {
+		fmt.Printf("%s, %d\n", v.Key.(string), v.Value)
 	}
 
 }
