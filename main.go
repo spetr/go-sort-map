@@ -32,7 +32,7 @@ func init() {
 	}
 }
 
-func sortMap(v interface{}) interface{} {
+func sortMap(v interface{}) []keyValue {
 	var s []keyValue
 	for k, v := range v.(map[string]int) {
 		s = append(s, keyValue{k, v})
@@ -45,7 +45,7 @@ func sortMap(v interface{}) interface{} {
 
 func main() {
 	sortedX := sortMap(values)
-	for _, v := range sortedX.([]keyValue) {
+	for _, v := range sortedX {
 		fmt.Printf("%s, %d\n", v.Key.(string), v.Value)
 	}
 
