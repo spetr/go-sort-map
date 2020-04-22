@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 )
@@ -32,19 +33,27 @@ func init() {
 	}
 }
 
-func sortMap(v interface{}) []keyValue {
-	var s []keyValue
-	for k, v := range v.(map[string]int) {
-		s = append(s, keyValue{k, v})
+func sortMap(v interface{}) (r []keyValue, err error) {
+	switch v.(type) {
+	case map[string]int:
+		for k, v := range v.(map[string]int) {
+			r = append(r, keyValue{k, v})
+		}
+	case map[int]int:
+		for k, v := range v.(map[string]int) {
+			r = append(r, keyValue{k, v})
+		}
+	default:
+		return nil, errors.New("Unsupported type")
 	}
-	sort.Slice(s, func(i, j int) bool {
-		return s[i].Value > s[j].Value
+	sort.Slice(r, func(i, j int) bool {
+		return r[i].Value > r[j].Value
 	})
-	return s
+	return r, nil
 }
 
 func main() {
-	sortedX := sortMap(values)
+	sortedX, _ := sortMap(values)
 	for _, v := range sortedX {
 		fmt.Printf("%s, %d\n", v.Key.(string), v.Value)
 	}
