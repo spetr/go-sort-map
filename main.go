@@ -54,8 +54,12 @@ func sortMap(v interface{}) (r []keyValue, err error) {
 
 func main() {
 	sortedX, _ := sortMap(values)
-	for _, v := range sortedX {
+	for i, v := range sortedX {
 		fmt.Printf("%s, %d\n", v.Key.(string), v.Value)
+		if i >= 5 {
+			fmt.Println("Top 5 vypsano")
+			break
+		}
 	}
 
 }
