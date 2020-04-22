@@ -40,7 +40,7 @@ func sortMap(v interface{}) (r []keyValue, err error) {
 			r = append(r, keyValue{k, v})
 		}
 	case map[int]int:
-		for k, v := range v.(map[string]int) {
+		for k, v := range v.(map[int]int) {
 			r = append(r, keyValue{k, v})
 		}
 	default:
