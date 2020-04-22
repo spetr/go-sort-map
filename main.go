@@ -9,9 +9,8 @@ import (
 const topValuesCount = 3
 
 var (
-	values       map[string]int
-	topValues    map[string]int // Seznam aktualne nejvyzsich hodnot
-	topValuesMin int            // Aktualne nejmensi hodnota v "topValues"
+	valuesString map[string]int
+	valuesInt    map[int]int
 )
 
 type keyValue struct {
@@ -20,7 +19,7 @@ type keyValue struct {
 }
 
 func init() {
-	values = map[string]int{
+	valuesString = map[string]int{
 		"A": 3,
 		"B": 17,
 		"C": 1,
@@ -30,6 +29,16 @@ func init() {
 		"G": 71,
 		"H": 0,
 		"I": 3,
+	}
+	valuesInt = map[int]int{
+		1: 53,
+		2: 9,
+		3: 66,
+		4: 0,
+		5: 11,
+		6: 27,
+		7: 9,
+		8: 44,
 	}
 }
 
@@ -53,17 +62,24 @@ func sortMap(v interface{}) (r []keyValue, err error) {
 }
 
 func main() {
-	sorted, err := sortMap(values)
+	fmt.Println("Key is String:")
+	sortedString, err := sortMap(valuesString)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	for i, v := range sorted {
+	for _, v := range sortedString {
 		fmt.Printf("%s, %d\n", v.Key.(string), v.Value)
-		if i >= 5 {
-			fmt.Println("Top 5 vypsano")
-			break
-		}
+	}
+
+	fmt.Println("Key is Int:")
+	sortedInt, err := sortMap(valuesInt)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	for _, v := range sortedInt {
+		fmt.Printf("%d, %d\n", v.Key.(int), v.Value)
 	}
 
 }
